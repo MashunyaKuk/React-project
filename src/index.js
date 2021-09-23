@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./styles/index.scss";
-import CardHolder from "./components/cardHolder/cardHolder";
+import CardHolder from "./Components/CardHolder/cardHolder";
 
 //Simple JS
 

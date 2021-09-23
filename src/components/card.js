@@ -75,17 +75,52 @@ export default Card;
 //React
 import React from "react";
 
-class Card extends React.Component {
+class Card extends React.PureComponent {
   constructor(props) {
     super(props);
+    /* this.state = {
+      name: `Task ${this.props.index}`,
+    }; */
   }
-
   render() {
+    console.log("card render", this.props.taskName);
     return (
-      <div>
-        {`New ${this.props.taskName} is ${
-          this.props.isDone ? "done" : "not Done"
-        }`}
+      <div className={"card"}>
+        <div className={"card-name"}>
+          {`${this.props.taskName} is ${
+            this.props.isDone ? "done" : "not Done"
+          }`}
+        </div>
+        <button
+          className={"add-btn"}
+          onClick={this.props.changeName(this.props.index)}
+        >
+          Change Taskname
+        </button>
+        <button
+          className={"isdone-btn"}
+          onClick={this.props.taskDone(this.props.index)}
+        >
+          Done
+        </button>
+        <button
+          className={"totop-btn"}
+          onClick={this.props.toTop(this.props.index)}
+        >
+          To top
+        </button>
+        <button
+          className={"tobottom-btn"}
+          onClick={this.props.toBottom(this.props.index)}
+        >
+          To bottom
+        </button>
+        <button
+          className={"delete-btn"}
+          onClick={this.props.deleteTask(this.props.index)}
+        >
+          Delete
+        </button>
       </div>
     );
   }

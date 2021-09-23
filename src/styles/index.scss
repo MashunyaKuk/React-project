@@ -1,8 +1,96 @@
 body {
-  background-color: rgb(10, 220, 228);
+  background-color: rgba(91, 208, 212, 0.897);
 }
 
 h1 {
   font-size: 30px;
   color: rgb(34, 37, 37);
+}
+
+.classholder {
+  width: 500px;
+  background-color: rgb(16, 128, 136);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 10px 0px 10px;
+  border-radius: 4px;
+}
+
+.card {
+  width: 450px;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background-color: whitesmoke;
+}
+
+.card-name {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: rgb(34, 37, 37);
+}
+
+#usercard-text {
+  display: block;
+  margin-bottom: 10px;
+  border: 2px solid rgb(16, 128, 136);
+  font-size: 18px;
+  color: rgb(34, 37, 37);
+  width: 100%;
+}
+
+.add-btn {
+  font-size: 14px;
+  background-color: rgb(255, 224, 50);
+  padding: 10px;
+  color: rgb(34, 37, 37);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.isdone-btn {
+  font-size: 14px;
+  background-color: rgb(41, 235, 15);
+  padding: 10px;
+  color: rgb(34, 37, 37);
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.totop-btn {
+  font-size: 14px;
+  background-color: rgb(219, 100, 255);
+  padding: 10px;
+  color: rgb(34, 37, 37);
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.tobottom-btn {
+  font-size: 14px;
+  background-color: rgb(127, 125, 255);
+  padding: 10px;
+  color: rgb(34, 37, 37);
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  font-size: 14px;
+  background-color: rgb(255, 42, 42);
+  padding: 10px;
+  color: rgb(34, 37, 37);
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
 }
