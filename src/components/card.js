@@ -1,59 +1,3 @@
-// Example of class Animal
-/* class Animal {
-  constructor(name) {
-    this.name = name;
-    this.speed = 0;
-  }
-  run(speed) {
-    this.speed = speed;
-    console.log(`${this.name} бежит со скоростью ${this.speed}.`);
-  }
-  stop() {
-    this.speed = 0;
-    console.log(`${this.name} стоит!`);
-  }
-}
-class Rabbit extends Animal {
-  constructor(name, earLength) {
-    super(name);
-    this.earLength = earLength;
-  }
-  hide() {
-    console.log(`${this.name} прячется!`);
-  }
-  stop() {
-    super.stop();
-    this.hide();
-  }
-}
-let rabbit = new Rabbit("Белый кролик", 10);
-rabbit.run(7);
-rabbit.stop();
-console.log(rabbit.earLength); */
-
-//Example of class Car
-/* class Car {
-  constructor(maker, model) {
-    this.maker = maker;
-    this.model = model;
-  }
-  drive() {
-    console.log(`${this.model} разгоняется со скоростью ${this.maker}`);
-  }
-}
-
-class Tesla extends Car {
-  miles(permile) {
-    this.permile = permile;
-    console.log(
-      `${this.model} разгоняется со скоростью ${this.permile} в милях`
-    );
-  }
-}
-let tesla = new Tesla("26 km/h", "Tesla");
-tesla.drive();
-tesla.miles(8882); */
-
 //Simple JS
 
 /* class Card {
@@ -73,14 +17,12 @@ export default Card;
  */
 
 //React
-import React from "react";
+import React, { useEffect, memo } from "react";
 
-class Card extends React.PureComponent {
+//Class component
+/* class Card extends React.PureComponent {
   constructor(props) {
     super(props);
-    /* this.state = {
-      name: `Task ${this.props.index}`,
-    }; */
   }
   render() {
     console.log("card render", this.props.taskName);
@@ -126,4 +68,42 @@ class Card extends React.PureComponent {
   }
 }
 
-export default Card;
+export default Card; */
+
+//Functional component
+const Card = (props) => {
+  useEffect(() => {
+    console.log("useEffect", props.taskName);
+    // = componentWillUnmount
+    return () => {
+      console.log("bue bue", props.taskName);
+    };
+  }, []);
+
+  console.log("card render", props.taskName);
+
+  return (
+    <div className={"card"}>
+      <div className={"card-name"}>
+        {`${props.taskName} is ${props.isDone ? "done" : "not Done"}`}
+      </div>
+      <button className={"add-btn"} onClick={props.changeName(props.index)}>
+        Change Taskname
+      </button>
+      <button className={"isdone-btn"} onClick={props.taskDone(props.index)}>
+        Done
+      </button>
+      <button className={"totop-btn"} onClick={props.toTop(props.index)}>
+        To top
+      </button>
+      <button className={"tobottom-btn"} onClick={props.toBottom(props.index)}>
+        To bottom
+      </button>
+      <button className={"delete-btn"} onClick={props.deleteTask(props.index)}>
+        Delete
+      </button>
+    </div>
+  );
+};
+
+export default memo(Card);
