@@ -87,6 +87,7 @@ const Card = (props) => {
       <div className={"card-name"}>
         {`${props.taskName} is ${props.isDone ? "done" : "not Done"}`}
       </div>
+      {props.children}
       <button className={"add-btn"} onClick={props.changeName(props.index)}>
         Change Taskname
       </button>
@@ -101,6 +102,13 @@ const Card = (props) => {
       </button>
       <button className={"delete-btn"} onClick={props.deleteTask(props.index)}>
         Delete
+      </button>
+      <button
+        onClick={() => {
+          props.setIsModalOpen("Card modal");
+        }}
+      >
+        Modal card
       </button>
     </div>
   );

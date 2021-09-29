@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
+import App from "./app";
 import "./styles/index.scss";
-import CardHolder from "./Components/CardHolder/cardHolder";
 
 //Simple JS
 
@@ -24,6 +24,6 @@ const cardList = taskList.map((task) => {
   { taskName: "Task 2", isDone: false },
 ]; */
 
-ReactDOM.render(<CardHolder />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
 
 //Нужно отбилдить после изменений в сонфиге или пэкедж джсон, иначе не получается нормально пользоваться девсервером
