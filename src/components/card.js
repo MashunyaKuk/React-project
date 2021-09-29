@@ -105,7 +105,7 @@ const Card = (props) => {
       </button>
       <button
         onClick={() => {
-          props.setIsModalOpen("Card modal");
+          props.setModalContent("Card modal");
         }}
       >
         Modal card

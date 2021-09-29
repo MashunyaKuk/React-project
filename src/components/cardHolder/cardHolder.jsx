@@ -143,7 +143,7 @@ const CardHolder = (props) => {
         {taskList.map((task, index) => {
             return (
                 <div key={task.taskName}>
-                <Card taskName={task.taskName} isDone={task.isDone} index={index} changeName={changeName} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} setIsModalOpen={props.setIsModalOpen}>
+                <Card taskName={task.taskName} isDone={task.isDone} index={index} changeName={changeName} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} setModalContent={props.setModalContent}>
                     <div>{index}</div>
                 </Card>
                 </div>
@@ -153,7 +153,7 @@ const CardHolder = (props) => {
         <textarea ref={nameRef} id={'usercard-text'} rows='1'></textarea>
         <button className={"add-btn"} onClick={addTask}>Add new Task</button>
         </div>
-        <button onClick ={ () => {props.setIsModalOpen('Cardholder open')}}>
+        <button onClick ={ () => {props.setModalContent('Cardholder open')}}>
             Modal
         </button>
         </div>

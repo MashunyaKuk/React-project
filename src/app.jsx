@@ -5,8 +5,8 @@ import GlobalModalProvider from "./globalModalProvider";
 const App = (props) => {
     return (
         <React.Fragment>
-            <GlobalModalProvider renderProps={(setIsModalOpen) => {
-                return (<CardHolder setIsModalOpen={setIsModalOpen}/>)
+            <GlobalModalProvider renderProps={(setModalContent) => {
+                return (<CardHolder setModalContent={setModalContent}/>)
             }}>
             </GlobalModalProvider>
         </React.Fragment>
