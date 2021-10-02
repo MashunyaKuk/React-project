@@ -1,87 +1,15 @@
-import React, {useState, useEffect, useCallback, useRef} from "react";
-import Card from "../card";
-import ModalWindow from "../modalWindow";
+import React, {useState, useEffect, useContext} from "react";
+import Card from "../Card";
+import ModalWindow from "../ModalWindow";
+import {ModalContext} from "../../GlobalModalProvider";
 
-//Class Component
-/* class CardHolder extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            taskList: [
-                { taskName: "Task 1", isDone: false },
-                { taskName: "Task 2", isDone: false },
-              ]
-        }
-    }
-    changeName = (index) => () => {
-        let newTaskList = [...this.state.taskList];
-        newTaskList[index].taskName = "Changed-name card";
-        this.setState({taskList: newTaskList});
-      }
-    addTask = () => {
-        let newTaskList = [...this.state.taskList];
-        let userCardName = document.getElementById('usercard-text');
-        newTaskList.push({taskName: userCardName.value, isDone: false});
-        this.setState({taskList: newTaskList});
-        userCardName.value = '';
-    }
 
-    toTop = (index) => () => {
-        let newTaskList = [...this.state.taskList];
-        //newTaskList.unshift(newTaskList[index]); 
-        //newTaskList.splice(newTaskList[index+1], 1);
-        newTaskList.sort(function(x,y){  
-            return x == newTaskList[index] ? -1 : y == newTaskList[index] ? 1 : 0;  
-          });
-        this.setState({taskList: newTaskList});
-    }
-
-    toBottom = (index) => () => {
-        let newTaskList = [...this.state.taskList]; 
-        newTaskList.sort(function(x,y){  
-            return y == newTaskList[index] ? -1 : x == newTaskList[index] ? 1 : 0;  
-          });
-        this.setState({taskList: newTaskList});
-    }
-
-    deleteTask = (index) => () => {
-        let newTaskList = [...this.state.taskList]; 
-        newTaskList.splice(index, 1);
-        this.setState({taskList: newTaskList});
-    }
-
-    taskDone = (index) => () => {
-        let newTaskList = [...this.state.taskList];
-        newTaskList[index].isDone = true;
-        this.setState({taskList: newTaskList});
-    }
-    
-    render() {
-        return (
-            <div className={'classholder'}>
-            {this.state.taskList.map((task, index) => {
-                //console.log('test', this.state.taskList);
-                return (
-                    <div key={task.taskName}>
-                    <Card taskName={task.taskName} isDone={task.isDone} index={index} changeName={this.changeName} toTop={this.toTop} toBottom ={this.toBottom} deleteTask={this.deleteTask} taskDone={this.taskDone}/>
-                    </div>
-                )
-            })}
-            <div className="card">
-            <textarea id={'usercard-text'} rows='1'></textarea>
-            <button className={"add-btn"} onClick={this.addTask}>Add new Task</button>
-            </div>
-        </div>
-        )
-    }
-}
-
-export default CardHolder */
 
 //Functional Component
 const CardHolder = (props) => {
     const [taskList, setTaskList] = useState([]);
-    const nameRef = useRef();
+    const [newTaskName, setNewTaskName] = useState('');
+    const setModalContent = useContext(ModalContext);
     // useEffect() = componentDidMount()
     useEffect(() => {
         console.log('useEffect');
@@ -101,11 +29,10 @@ const CardHolder = (props) => {
       }
 
     const addTask = () => {
-        console.log('testing refs', nameRef.current.value);
         let newTaskList = [...taskList];
-        newTaskList.push({taskName: nameRef.current.value, isDone: false});
+        newTaskList.push({taskName: newTaskName, isDone: false});
         setTaskList(newTaskList);
-        nameRef.current.value = '';
+        setNewTaskName('');
     }
 
     const toTop = (index) => () => {
@@ -124,17 +51,17 @@ const CardHolder = (props) => {
           setTaskList(newTaskList);
     };
 
-    const deleteTask = useCallback((index) => () => {
+    const deleteTask = (index) => () => {
         let newTaskList = [...taskList]; 
         newTaskList.splice(index, 1);
         setTaskList(newTaskList);
-    }, [taskList]);
+    };
 
-    const taskDone = useCallback((index) => () => {
+    const taskDone = (index) => () => {
         let newTaskList = [...taskList];
         newTaskList[index].isDone = true;
         setTaskList(newTaskList);
-    }, [taskList]);
+    };
 
     console.log("cardholder render");
 
@@ -143,17 +70,17 @@ const CardHolder = (props) => {
         {taskList.map((task, index) => {
             return (
                 <div key={task.taskName}>
-                <Card taskName={task.taskName} isDone={task.isDone} index={index} changeName={changeName} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} setModalContent={props.setModalContent}>
+                <Card taskName={task.taskName} isDone={task.isDone} index={index} changeName={changeName} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone}>
                     <div>{index}</div>
                 </Card>
                 </div>
             )
         })}
         <div className="card">
-        <textarea ref={nameRef} id={'usercard-text'} rows='1'></textarea>
+        <textarea onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} id={'usercard-text'} rows='1'></textarea>
         <button className={"add-btn"} onClick={addTask}>Add new Task</button>
         </div>
-        <button onClick ={ () => {props.setModalContent('Cardholder open')}}>
+        <button onClick ={ () => {setModalContent('Cardholder open')}}>
             Modal
         </button>
         </div>
