@@ -1,18 +1,24 @@
 import React from 'react';
+import styled from "styled-components";
+
+const StyledMainLayout = styled.div`
+    margin: 50px auto;
+    padding: 0 15px;
+`
 
 const MainLayout = (props) => {
     return (
-        <div className="app">
-            <div>
+        <StyledMainLayout className="app">
+            <div className="header">
                 Header
             </div>
-            <div>
+            <div className="main">
                 {props.children}
             </div>
-            <div>
+            <div className="footer">
                 Footer
             </div>
-        </div>
+        </StyledMainLayout>
         
     )
 };
