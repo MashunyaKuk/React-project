@@ -1,5 +1,6 @@
 import React, {useState, memo} from 'react';
 import { ThemeProvider, StyleSheetManager, createGlobalStyle } from 'styled-components';
+import background from "../assets/img/bg.png";
 
 export const ThemeContext = React.createContext('')
 
@@ -10,6 +11,11 @@ const GlobalStyle = createGlobalStyle `
         list-style: none;
         text-decoration: none;
         box-sizing: border-box;
+        background-image: url(${background});
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-attachment: fixed;
     }
 `
 

@@ -1,17 +1,26 @@
 import React, {useState, useEffect, useContext} from "react";
 import Card from "../Card";
-import ModalWindow from "../ModalWindow";
-import {ModalContext} from "../../GlobalModalProvider";
 import styled from "styled-components";
 
 const StyledCardHolder = styled.div`
-    width: 298px;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    padding: 16px;
-    margin-bottom: 50px;
-    margin-right: 40px;
-    
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: flex-start;
+
+    .board-card {
+        width: 250px;
+        border: 1px solid #e5e5e5;
+        border-radius: 4px;
+        padding: 16px;
+        margin-bottom: 50px;
+        margin-right: 40px;
+
+        :last-child {
+            margin-right: 0px;
+        }
+    }
+
     .board-card_title {
      padding: 5px 0;
         
@@ -30,7 +39,7 @@ const StyledCardHolder = styled.div`
         margin-bottom: 16px;
     }
 
-    #usercard-title, #usercard-description {
+    .usercard-title, .usercard-description {
         display: block;
         margin-bottom: 8px;
         border: 2px solid rgba(253, 229, 99, 0.8);
@@ -46,7 +55,6 @@ const StyledCardHolder = styled.div`
         }
     }
 
-    
     .add-btn {
         font-size: 14px;
         background-color: rgba(253, 229, 99, 0.8);
@@ -68,22 +76,20 @@ const CardHolder = (props) => {
     const [taskList, setTaskList] = useState([]);
     const [newTaskName, setNewTaskName] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
-    //const setModalContent = useContext(ModalContext);
-    // useEffect() = componentDidMount()
     useEffect(() => {
         console.log('useEffect');
         new Promise((res, rej) => {
-            res([{ taskName: "Task 1", isDone: false, taskDescription: "Task 1 description" },
-            { taskName: "Task 2", isDone: false, taskDescription: "Task 1 description" }])
+            res([{ taskName: "Task 1", isDone: false, taskDescription: "Task 1 description", state: 0},
+            { taskName: "Task 2", isDone: false, taskDescription: "Task 1 description", state: 1 }, { taskName: "Task 3", isDone: true, taskDescription: "Task 3 description", state: 2 }])
         }).then((data) => {
             setTaskList(data);
         })
         
     }, []);
 
-    const addTask = () => {
+    const addTask = (state) => {
         let newTaskList = [...taskList];
-        newTaskList.push({taskName: newTaskName, isDone: false, taskDescription: newTaskDescription});
+        newTaskList.push({taskName: newTaskName, isDone: false, taskDescription: newTaskDescription, state: state});
         setTaskList(newTaskList);
         setNewTaskName('');
         setNewTaskDescription('');
@@ -114,36 +120,79 @@ const CardHolder = (props) => {
     const taskDone = (index) => () => {
         let newTaskList = [...taskList];
         newTaskList[index].isDone = true;
+        newTaskList[index].state = 2;
         setTaskList(newTaskList);
     };
 
-    console.log("cardholder render");
 
     return (
         <StyledCardHolder>
-            <div class="board-card_title">
+            <div className={'board-card'}>
+                <div className={"board-card_title"}>
                 <h2>
                 To Do
                 </h2>
-            </div>
-        {taskList.map((task, index) => {
-            return (
-                <div key={task.taskName}>
-                <Card taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription}>
-                </Card>
                 </div>
-            )
-        })}
-        
-        <div className="card">
-        <textarea onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} id={'usercard-title'} rows='1' placeholder={'Your task name'}></textarea>
-        <textarea onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} id={'usercard-description'} rows='1' placeholder={'Your task description'}></textarea>
-        <button className={"add-btn"} onClick={addTask}>Add new Task</button>
-        </div>
-        <button onClick ={ () => {setModalContent('Cardholder open')}}>
-            Modal
-        </button>
+                {taskList.map((task, index) => {
+                    if (task.state === 0) {
+                        return (
+                    <Card key={task.taskName} taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
+                    </Card>
+                )
+                    }
+                })}
+                <div className="card">
+                <input onChange={(event) => {
+                    setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name'}/>
+                <input onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} className={'usercard-description'} placeholder={'Your task description'}/>
+                <button className={"add-btn"} onClick={() => {addTask(0)}}>Add new Task</button>
+                </div>
+            </div>
+            <div className={'board-card'}>
+                <div className={"board-card_title"}>
+                <h2>
+                In Progress
+                </h2>
+                </div>
+                {taskList.map((task, index) => {
+                    if (task.state === 1) {
+                        return (
+                    <div key={task.taskName}>
+                    <Card taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
+                    </Card>
+                    </div>
+                )
+                    }
+                })}
+                <div className="card">
+                <input onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name'}/>
+                <input onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} className={'usercard-description'} placeholder={'Your task description'}/>
+                <button className={"add-btn"} onClick={() => {addTask(1)}}>Add new Task</button>
+                </div>
+            </div>
+
+            <div className={'board-card'}>
+                <div className={"board-card_title"}>
+                <h2>
+                Done
+                </h2>
+                </div>
+                {taskList.map((task, index) => {
+                    if (task.state === 2) {
+                    return (
+                    <div key={task.taskName}>
+                    <Card taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
+                    </Card>
+                    </div>
+                )
+                    }
+                })}
+            
+                
+            </div>
+            
         </StyledCardHolder>
+
     )
 }
 

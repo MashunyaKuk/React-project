@@ -1,5 +1,5 @@
 import React, {memo, useState} from 'react';
-import ModalWindow from "./Components/ModalWindow";
+import ModalWindow from "../Components/ModalWindow";
 
 export const ModalContext = React.createContext(false);
 
@@ -8,11 +8,11 @@ const GlobalModalProvider = (props) => {
 
   return (
     <React.Fragment>
-      {modalContent &&
+      <ModalContext.Provider value={setModalContent}>
+        {modalContent &&
       <ModalWindow>
         {modalContent}
       </ModalWindow>}
-      <ModalContext.Provider value={setModalContent}>
         {props.children}
       </ModalContext.Provider>
     </React.Fragment>

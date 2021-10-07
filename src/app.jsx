@@ -1,10 +1,9 @@
 import React from 'react';
-import CardHolder from "./Components/CardHolder/CardHolder";
-import GlobalModalProvider from "./GlobalModalProvider";
+import GlobalModalProvider from "./HOC/GlobalModalProvider";
 import {BrowserRouter} from "react-router-dom";
 import RootRouter from './Route/Root';
 import MainLayout from './Layouts/MainLayout';
-import GlobalThemeProvider from './GlobalThemeProvider';
+import GlobalThemeProvider from './HOC/GlobalThemeProvider';
 
 const App = (props) => {
     return (
