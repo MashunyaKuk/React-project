@@ -1,13 +1,13 @@
 import React from 'react';
 import {Switch, Route, Redirect, useHistory} from 'react-router-dom';
-import CardHolder from '../Components/CardHolder/CardHolder';
+import MainScene from '../Scenes/MainScene';
 
 const RootRouter = () => {
     return (
     <React.Fragment>
         <Switch>
             <Route path={'/cards'}>
-                <CardHolder/>
+                <MainScene/>
             </Route>
             <Route path={'/card/:taskID'} render={(routeProps) => {
                 console.log('props', routeProps);

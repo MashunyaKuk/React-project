@@ -1,24 +1,16 @@
 import React, {useState, useEffect, useContext} from "react";
-import Card from "../Card";
 import styled from "styled-components";
+import { TASK_STATUS } from "../../constants/taskStatus";
 
 const StyledCardHolder = styled.div`
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: flex-start;
+    width: 250px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 16px;
+    margin-right: 40px;
 
-    .board-card {
-        width: 250px;
-        border: 1px solid #e5e5e5;
-        border-radius: 4px;
-        padding: 16px;
-        margin-bottom: 50px;
-        margin-right: 40px;
-
-        :last-child {
+    :last-child {
             margin-right: 0px;
-        }
     }
 
     .board-card_title {
@@ -45,8 +37,10 @@ const StyledCardHolder = styled.div`
         border: 2px solid rgba(253, 229, 99, 0.8);
         font-size: 14px;
         color: rgb(34, 37, 37);
-        width: calc(100% - 8px);
+        width: calc(100% - 16px);
+        height: 15px;
         font-family: Helvetica;
+        padding: 5px 8px;
 
         :focus {
             outline: none;
@@ -73,126 +67,30 @@ const StyledCardHolder = styled.div`
 `
 
 const CardHolder = (props) => {
-    const [taskList, setTaskList] = useState([]);
     const [newTaskName, setNewTaskName] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
-    useEffect(() => {
-        console.log('useEffect');
-        new Promise((res, rej) => {
-            res([{ taskName: "Task 1", isDone: false, taskDescription: "Task 1 description", state: 0},
-            { taskName: "Task 2", isDone: false, taskDescription: "Task 1 description", state: 1 }, { taskName: "Task 3", isDone: true, taskDescription: "Task 3 description", state: 2 }])
-        }).then((data) => {
-            setTaskList(data);
-        })
-        
-    }, []);
-
-    const addTask = (state) => {
-        let newTaskList = [...taskList];
-        newTaskList.push({taskName: newTaskName, isDone: false, taskDescription: newTaskDescription, state: state});
-        setTaskList(newTaskList);
-        setNewTaskName('');
-        setNewTaskDescription('');
-    }
-
-    const toTop = (index) => () => {
-        let newTaskList = [...taskList];
-        newTaskList.sort(function(x,y){  
-            return x == newTaskList[index] ? -1 : y == newTaskList[index] ? 1 : 0;  
-          });
-        setTaskList(newTaskList);
-        }
-
-    const toBottom = (index) => () => {
-        let newTaskList = [...taskList]; 
-        newTaskList.sort(function(x,y){  
-            return y == newTaskList[index] ? -1 : x == newTaskList[index] ? 1 : 0;  
-          });
-          setTaskList(newTaskList);
-    };
-
-    const deleteTask = (index) => () => {
-        let newTaskList = [...taskList]; 
-        newTaskList.splice(index, 1);
-        setTaskList(newTaskList);
-    };
-
-    const taskDone = (index) => () => {
-        let newTaskList = [...taskList];
-        newTaskList[index].isDone = true;
-        newTaskList[index].state = 2;
-        setTaskList(newTaskList);
-    };
-
+    const [taskList, setTaskList] = useState([]);
 
     return (
         <StyledCardHolder>
-            <div className={'board-card'}>
-                <div className={"board-card_title"}>
+            <div className={"board-card_title"}>
                 <h2>
-                To Do
+                    {props.title}
                 </h2>
-                </div>
-                {taskList.map((task, index) => {
-                    if (task.state === 0) {
-                        return (
-                    <Card key={task.taskName} taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
-                    </Card>
-                )
-                    }
-                })}
-                <div className="card">
-                <input onChange={(event) => {
-                    setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name'}/>
+            </div>
+            {props.children}
+            {props.taskStatus !== TASK_STATUS.done &&
+            <div className="card">
+                <input onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name *'}/>
                 <input onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} className={'usercard-description'} placeholder={'Your task description'}/>
-                <button className={"add-btn"} onClick={() => {addTask(0)}}>Add new Task</button>
-                </div>
+                <button className={"add-btn"} onClick={() => {
+                    props.addTask(newTaskName, newTaskDescription, props.taskStatus);
+                    setNewTaskName('');
+                    setNewTaskDescription('');
+                }}>Add new Task</button>
             </div>
-            <div className={'board-card'}>
-                <div className={"board-card_title"}>
-                <h2>
-                In Progress
-                </h2>
-                </div>
-                {taskList.map((task, index) => {
-                    if (task.state === 1) {
-                        return (
-                    <div key={task.taskName}>
-                    <Card taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
-                    </Card>
-                    </div>
-                )
-                    }
-                })}
-                <div className="card">
-                <input onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name'}/>
-                <input onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} className={'usercard-description'} placeholder={'Your task description'}/>
-                <button className={"add-btn"} onClick={() => {addTask(1)}}>Add new Task</button>
-                </div>
-            </div>
-
-            <div className={'board-card'}>
-                <div className={"board-card_title"}>
-                <h2>
-                Done
-                </h2>
-                </div>
-                {taskList.map((task, index) => {
-                    if (task.state === 2) {
-                    return (
-                    <div key={task.taskName}>
-                    <Card taskName={task.taskName} isDone={task.isDone} index={index} toTop={toTop} toBottom ={toBottom} deleteTask={deleteTask} taskDone={taskDone} taskDescription={task.taskDescription} state={task.state}>
-                    </Card>
-                    </div>
-                )
-                    }
-                })}
-            
-                
-            </div>
-            
+}
         </StyledCardHolder>
-
     )
 }
 

@@ -4,6 +4,8 @@ import { getCardDetailRoute } from "../Route/routes";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import pen from '../assets/img/edit.png';
+import EditModal from "./ModalContent/EditModal";
+import { TASK_STATUS } from "../constants/taskStatus"
 
 const StyledCard = styled.div`
   background-color: rgba(255, 255, 255, 0.9);
@@ -22,6 +24,7 @@ const StyledCard = styled.div`
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
+    margin-right: 10px;
     cursor: pointer;
     font-size: 20px;
     line-height: 26px;
@@ -137,7 +140,9 @@ const Card = (props) => {
         {props.children}
         <button
         onClick={() => {
-          setModalContent("Card modal");
+          setModalContent(
+            <EditModal currentTaskName={props.taskName} currentTaskDescription={props.taskDescription} currentIndex={props.index} changeName={props.changeTaskName}/>
+          );
         }} className="edit-btn">
         <img src={pen} alt='logo' className={'pen'}/>
       </button>
@@ -155,7 +160,7 @@ const Card = (props) => {
         </button>
       </div>
       <div className={"done-delete-btn"}>
-        {props.state !== 2 &&
+        {props.state !== TASK_STATUS.done &&
         <button className={"btn isdone-btn"} onClick={props.taskDone(props.index)}>
           Done
         </button>
