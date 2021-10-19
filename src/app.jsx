@@ -4,18 +4,21 @@ import {BrowserRouter} from "react-router-dom";
 import RootRouter from './Route/Root';
 import MainLayout from './Layouts/MainLayout';
 import GlobalThemeProvider from './HOC/GlobalThemeProvider';
+import GlobalStoreProvider from './HOC/GlobalStoreProvider';
 
 const App = (props) => {
     return (
         <React.Fragment>
             <BrowserRouter>
-                <GlobalThemeProvider>
-                    <GlobalModalProvider>
-                        <MainLayout>
-                            <RootRouter/>
-                        </MainLayout>
-                    </GlobalModalProvider>
-                </GlobalThemeProvider>
+                <GlobalStoreProvider>
+                    <GlobalThemeProvider>
+                        <GlobalModalProvider>
+                            <MainLayout>
+                                <RootRouter/>
+                            </MainLayout>
+                        </GlobalModalProvider>
+                    </GlobalThemeProvider>
+                </GlobalStoreProvider>
             </BrowserRouter>  
         </React.Fragment>
     )

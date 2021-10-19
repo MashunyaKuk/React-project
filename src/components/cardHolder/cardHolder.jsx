@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { TASK_STATUS } from "../../constants/taskStatus";
 
@@ -69,7 +69,6 @@ const StyledCardHolder = styled.div`
 const CardHolder = (props) => {
     const [newTaskName, setNewTaskName] = useState('');
     const [newTaskDescription, setNewTaskDescription] = useState('');
-    const [taskList, setTaskList] = useState([]);
 
     return (
         <StyledCardHolder>
@@ -81,9 +80,19 @@ const CardHolder = (props) => {
             {props.children}
             {props.taskStatus !== TASK_STATUS.done &&
             <div className="card">
-                <input onChange={(event) => {setNewTaskName(event.target.value)}} value={newTaskName} className={'usercard-title'} placeholder={'Your task name *'}/>
-                <input onChange={(event) => {setNewTaskDescription(event.target.value)}} value={newTaskDescription} className={'usercard-description'} placeholder={'Your task description'}/>
-                <button className={"add-btn"} onClick={() => {
+                <input
+                    onChange={(event) => {setNewTaskName(event.target.value)}}
+                    value={newTaskName}
+                    className={'usercard-title'}
+                    placeholder={'Your task name *'}/>
+                <input
+                onChange={(event) => {setNewTaskDescription(event.target.value)}}
+                value={newTaskDescription}
+                className={'usercard-description'}
+                placeholder={'Your task description'}/>
+                <button
+                className={"add-btn"}
+                onClick={() => {
                     props.addTask(newTaskName, newTaskDescription, props.taskStatus);
                     setNewTaskName('');
                     setNewTaskDescription('');

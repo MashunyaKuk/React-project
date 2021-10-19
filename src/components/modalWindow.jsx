@@ -25,7 +25,7 @@ const StyledModalWindow = styled.div`
         background-color: #fff;
         color: #221c1d;
         max-width: 500px;
-        padding: 12px;
+        padding: 20px 25px;
         border-radius: 4px;
         position: relative;
       }

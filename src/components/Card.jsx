@@ -1,11 +1,13 @@
-import React, { useEffect, memo, useContext } from "react";
-import { ModalContext } from "../HOC/GlobalModalProvider";
-import { getCardDetailRoute } from "../Route/routes";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import React, { useEffect, memo, useContext } from 'react';
+import { ModalContext } from '../HOC/GlobalModalProvider';
+import { getCardDetailRoute } from '../Route/routes';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import pen from '../assets/img/edit.png';
-import EditModal from "./ModalContent/EditModal";
-import { TASK_STATUS } from "../constants/taskStatus"
+import EditModal from './ModalContent/EditModal';
+import { TASK_STATUS } from '../constants/taskStatus';
+import {useDispatch} from 'react-redux';
+import { toTopCard, toBottomCard, deleteCard, doneCard } from '../store/actions/cardsList';
 
 const StyledCard = styled.div`
   background-color: rgba(255, 255, 255, 0.9);
@@ -122,6 +124,7 @@ const StyledCard = styled.div`
 
 const Card = (props) => {
   const setModalContent = useContext(ModalContext);
+  const dispatch = useDispatch();
   useEffect(() => {
     console.log("useEffect", props.taskName);
     return () => {
@@ -141,7 +144,11 @@ const Card = (props) => {
         <button
         onClick={() => {
           setModalContent(
-            <EditModal currentTaskName={props.taskName} currentTaskDescription={props.taskDescription} currentIndex={props.index} changeName={props.changeTaskName}/>
+            <EditModal
+            currentTaskName={props.taskName}
+            currentTaskDescription={props.taskDescription}
+            currentIndex={props.index}
+            changeName={props.changeTask}/>
           );
         }} className="edit-btn">
         <img src={pen} alt='logo' className={'pen'}/>
@@ -152,20 +159,20 @@ const Card = (props) => {
         </p>
       </div>
       <div className={"move-btn"}>
-        <button className={"btn totop-btn"} onClick={props.toTop(props.index)}>
+        <button className={"btn totop-btn"} onClick={() => {dispatch(toTopCard(props.index))}}>
           To top
         </button>
-        <button className={"btn tobottom-btn"} onClick={props.toBottom(props.index)}>
+        <button className={"btn tobottom-btn"} onClick={() => {dispatch(toBottomCard(props.index))}}>
           To bottom
         </button>
       </div>
       <div className={"done-delete-btn"}>
         {props.state !== TASK_STATUS.done &&
-        <button className={"btn isdone-btn"} onClick={props.taskDone(props.index)}>
+        <button className={"btn isdone-btn"} onClick={() => {dispatch(doneCard(props.index))}}>
           Done
         </button>
         }
-        <button className={"btn delete-btn"} onClick={props.deleteTask(props.index)}>
+        <button className={"btn delete-btn"} onClick={() => {dispatch(deleteCard(props.index))}}>
           Delete
         </button>
       </div>
