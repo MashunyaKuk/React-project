@@ -1,6 +1,7 @@
-import React, {memo, useContext} from 'react';
-import styled from "styled-components";
-import { ModalContext } from "../HOC/GlobalModalProvider";
+import React, { memo, useContext } from 'react';
+import styled from 'styled-components';
+// eslint-disable-next-line import/no-cycle
+import { ModalContext } from '../HOC/GlobalModalProvider';
 
 const StyledModalWindow = styled.div`
     height: 100%;
@@ -47,23 +48,32 @@ const StyledModalWindow = styled.div`
           transform: scale(1.2);
         }
       }
-`
+`;
 
 const ModalWindow = (props) => {
   const setModalContent = useContext(ModalContext);
-    return (
-        <StyledModalWindow className={"modal"}>
-            <div className={"popup"} id={"popup-main"}>
-                <div className={"popup-body"}>
-                <div className={"popup-content"}>
-                    {props.children}
-                    <button className="popup-close" id="close-popup" onClick={() => {
-                      setModalContent(false)}}>x</button>
-                </div>
-                </div>
-            </div>
-        </StyledModalWindow>
-    )
-}
+  const { children } = props;
+  return (
+    <StyledModalWindow className="modal">
+      <div className="popup" id="popup-main">
+        <div className="popup-body">
+          <div className="popup-content">
+            {children}
+            <button
+              type="button"
+              className="popup-close"
+              id="close-popup"
+              onClick={() => {
+                setModalContent(false);
+              }}
+            >
+              x
+            </button>
+          </div>
+        </div>
+      </div>
+    </StyledModalWindow>
+  );
+};
 
 export default memo(ModalWindow);

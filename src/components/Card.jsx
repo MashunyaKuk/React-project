@@ -1,13 +1,15 @@
-import React, { useEffect, memo, useContext } from 'react';
-import { ModalContext } from '../HOC/GlobalModalProvider';
-import { getCardDetailRoute } from '../Route/routes';
+import React, { memo, useContext } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { ModalContext } from '../HOC/GlobalModalProvider';
+import getCardDetailRoute from '../Route/routes';
 import pen from '../assets/img/edit.png';
 import EditModal from './ModalContent/EditModal';
-import { TASK_STATUS } from '../constants/taskStatus';
-import {useDispatch} from 'react-redux';
-import { toTopCard, toBottomCard, deleteCard, doneCard } from '../store/actions/cardsList';
+import TASK_STATUS from '../constants/taskStatus';
+import {
+  toTopCard, toBottomCard, deleteCard, doneCard,
+} from '../store/actions/cardsList';
 
 const StyledCard = styled.div`
   background-color: rgba(255, 255, 255, 0.9);
@@ -120,64 +122,80 @@ const StyledCard = styled.div`
         transform: scale(1.2, 1.2) translate(8%, 8%);
       }
   }
-`
+`;
 
 const Card = (props) => {
   const setModalContent = useContext(ModalContext);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("useEffect", props.taskName);
-    return () => {
-      console.log("bue bue", props.taskName);
-    };
-  }, []);
-
-  console.log("card render", props.taskName);
-
+  const {
+    children, changeTask, taskName, isDone, index, taskDescription, state,
+  } = props;
+  // useEffect(() => { () => { };}, []);
   return (
-    <StyledCard isDone={props.isDone}>
-      <div className={"card-title-wrapper"}>
-        <Link to={getCardDetailRoute(props.index)} className={"card-name"}>
-          {`${props.taskName} is ${props.isDone ? "done" : "not Done"}`}
+    <StyledCard isDone={isDone}>
+      <div className="card-title-wrapper">
+        <Link to={getCardDetailRoute(index)} className="card-name">
+          {`${taskName} is ${isDone ? 'done' : 'not Done'}`}
         </Link>
-        {props.children}
+        {children}
         <button
-        onClick={() => {
-          setModalContent(
-            <EditModal
-            currentTaskName={props.taskName}
-            currentTaskDescription={props.taskDescription}
-            currentIndex={props.index}
-            changeName={props.changeTask}/>
-          );
-        }} className="edit-btn">
-        <img src={pen} alt='logo' className={'pen'}/>
-      </button>
+          type="button"
+          onClick={() => {
+            setModalContent(
+              <EditModal
+                currentTaskName={taskName}
+                currentTaskDescription={taskDescription}
+                currentIndex={index}
+                changeName={changeTask}
+              />,
+            );
+          }}
+          className="edit-btn"
+        >
+          <img src={pen} alt="logo" className="pen" />
+        </button>
       </div>
-      <div className={"card-description"}>
-        <p className={"card-description_p"}>{`${props.taskDescription}`}
+      <div className="card-description">
+        <p className="card-description_p">
+          {`${taskDescription}`}
         </p>
       </div>
-      <div className={"move-btn"}>
-        <button className={"btn totop-btn"} onClick={() => {dispatch(toTopCard(props.index))}}>
+      <div className="move-btn">
+        <button
+          type="button"
+          className="btn totop-btn"
+          onClick={() => { dispatch(toTopCard(index)); }}
+        >
           To top
         </button>
-        <button className={"btn tobottom-btn"} onClick={() => {dispatch(toBottomCard(props.index))}}>
+        <button
+          type="button"
+          className="btn tobottom-btn"
+          onClick={() => { dispatch(toBottomCard(index)); }}
+        >
           To bottom
         </button>
       </div>
-      <div className={"done-delete-btn"}>
-        {props.state !== TASK_STATUS.done &&
-        <button className={"btn isdone-btn"} onClick={() => {dispatch(doneCard(props.index))}}>
-          Done
-        </button>
-        }
-        <button className={"btn delete-btn"} onClick={() => {dispatch(deleteCard(props.index))}}>
+      <div className="done-delete-btn">
+        {state !== TASK_STATUS.done
+          && (
+            <button
+              type="button"
+              className="btn isdone-btn"
+              onClick={() => { dispatch(doneCard(index)); }}
+            >
+              Done
+            </button>
+          )}
+        <button
+          type="button"
+          className="btn delete-btn"
+          onClick={() => { dispatch(deleteCard(index)); }}
+        >
           Delete
         </button>
       </div>
     </StyledCard>
-    
   );
 };
 

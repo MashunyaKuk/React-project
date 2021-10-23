@@ -1,21 +1,25 @@
-import React, {memo, useState} from 'react';
-import ModalWindow from "../Components/ModalWindow";
+import React, { memo, useState } from 'react';
+// eslint-disable-next-line import/no-cycle
+import ModalWindow from '../Components/ModalWindow';
 
 export const ModalContext = React.createContext(false);
 
 const GlobalModalProvider = (props) => {
   const [modalContent, setModalContent] = useState(false);
+  const { children } = props;
 
   return (
-    <React.Fragment>
+    <>
       <ModalContext.Provider value={setModalContent}>
-        {modalContent &&
-      <ModalWindow>
-        {modalContent}
-      </ModalWindow>}
-        {props.children}
+        {modalContent
+          && (
+            <ModalWindow>
+              {modalContent}
+            </ModalWindow>
+          )}
+        {children}
       </ModalContext.Provider>
-    </React.Fragment>
-  )
-}
+    </>
+  );
+};
 export default memo(GlobalModalProvider);

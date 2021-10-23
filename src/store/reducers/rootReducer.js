@@ -1,7 +1,7 @@
-import { combineReducers } from "redux";
-import taskListReducer from "./taskListReducer";
-import undoable from "redux-undo";
-import { CARD_LIST_ACTIONS } from "../actionTypes";
+import { combineReducers } from 'redux';
+import undoable from 'redux-undo';
+import taskListReducer from './taskListReducer';
+import CARD_LIST_ACTIONS from '../actionTypes';
 
 const rootReducer = combineReducers({
   taskListReducer: undoable(taskListReducer, {

@@ -1,12 +1,15 @@
-import React, {useState, useEffect} from 'react';
-import Card from '../Components/Card';
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { TASK_STATUS } from '../constants/taskStatus';
+import { useSelector, useDispatch } from 'react-redux';
+import Card from '../Components/Card';
+import TASK_STATUS from '../constants/taskStatus';
 import CardHolder from '../Components/CardHolder/CardHolder';
-import {useSelector, useDispatch} from 'react-redux';
-import { cardsListSelector } from '../store/selectors/cardsListSelector';
-import {newCard, toTopCard, toBottomCard, deleteCard, doneCard, changeCard} from '../store/actions/cardsList';
-import { CARD_LIST_ACTIONS } from '../store/actionTypes';
+import cardsListSelector from '../store/selectors/cardsListSelector';
+import {
+  newCard, toTopCard, toBottomCard, deleteCard, doneCard, changeCard,
+} from '../store/actions/cardsList';
+import CARD_LIST_ACTIONS from '../store/actionTypes';
 
 const StyledMainScene = styled.div`
     display: flex;
@@ -77,116 +80,136 @@ const StyledMainScene = styled.div`
             transform: scale(1.2, 1.2) translate(8%, 8%);
         }
       }
-`
+`;
 
-const MainScene = (props) => {
-    const taskList = useSelector(cardsListSelector);
-    const dispatch = useDispatch();
-    const [newTaskName, setNewTaskName] = useState('');
-    const [newTaskDescription, setNewTaskDescription] = useState('');
+const MainScene = () => {
+  const taskList = useSelector(cardsListSelector);
+  const dispatch = useDispatch();
+  const [, setNewTaskName] = useState('');
+  const [, setNewTaskDescription] = useState('');
 
-    useEffect(() => {
-        console.log('useEffect');
-        new Promise((res, rej) => {
-            res([{ taskName: "Task 1", isDone: false, taskDescription: "Task 1 description", state: TASK_STATUS.toDo},
-            { taskName: "Task 2", isDone: false, taskDescription: "Task 1 description", state: TASK_STATUS.progress }, { taskName: "Task 3", isDone: true, taskDescription: "Task 3 description", state: TASK_STATUS.done }])
-        }).then((data) => {
-        })
-    }, []);
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-vars
+    new Promise((res, rej) => {
+      res([{
+        taskName: 'Task 1', isDone: false, taskDescription: 'Task 1 description', state: TASK_STATUS.toDo,
+      }, {
+        taskName: 'Task 2', isDone: false, taskDescription: 'Task 1 description', state: TASK_STATUS.progress,
+      }, {
+        taskName: 'Task 3', isDone: true, taskDescription: 'Task 3 description', state: TASK_STATUS.done,
+      }]);
+      // eslint-disable-next-line no-unused-vars
+    }).then((data) => {
+    });
+  }, []);
 
-    const addTask = (newTaskName, newTaskDescription, state) => {
-        if (newTaskName !== '') {
-            dispatch(newCard(newTaskName, newTaskDescription, state));
-            setNewTaskName('');
-            setNewTaskDescription('');
-        }
+  const addTask = (newTaskName, newTaskDescription, state) => {
+    if (newTaskName !== '') {
+      dispatch(newCard(newTaskName, newTaskDescription, state));
+      setNewTaskName('');
+      setNewTaskDescription('');
     }
-    
-    const changeTask = (index, taskName, taskDescription) => {
-        dispatch(changeCard(index, taskName, taskDescription));
-    }
+  };
 
-    const toTop = (index) => () => {
-        dispatch(toTopCard(index));
-    }
+  const changeTask = (index, taskName, taskDescription) => {
+    dispatch(changeCard(index, taskName, taskDescription));
+  };
 
-    const toBottom = (index) => () => {
-        dispatch(toBottomCard(index));
-    }
+  const toTop = (index) => () => {
+    dispatch(toTopCard(index));
+  };
 
-    const deleteTask = (index) => () => {
-        dispatch(deleteCard(index));
-    }
+  const toBottom = (index) => () => {
+    dispatch(toBottomCard(index));
+  };
 
-    const taskDone = (index) => () => {
-        dispatch(doneCard(index));
-    }
+  const deleteTask = (index) => () => {
+    dispatch(deleteCard(index));
+  };
 
-    return (
-        <StyledMainScene>
-            <button onClick={() => {dispatch({type: CARD_LIST_ACTIONS.undo})}}>UNDO</button>
-            <button onClick={() => {dispatch({type: CARD_LIST_ACTIONS.redo})}}>REDO</button>
-            <CardHolder
-                title={'To Do'}
-                addTask={addTask}
-                taskStatus={TASK_STATUS.toDo}>
-                    {taskList.map((task, index) => {
-                        if (task.state === TASK_STATUS.toDo) {
-                            return (
-                                <Card
-                                    key={task.taskName}
-                                    taskName={task.taskName}
-                                    isDone={task.isDone}
-                                    index={index}
-                                    taskDescription={task.taskDescription}
-                                    state={task.state}>
-                                </Card>)
-                            }
-                        })
-                    }
-            </CardHolder>
-            <CardHolder
-                title={'In Progress'}
-                addTask={addTask}
-                taskStatus={TASK_STATUS.progress}>
-                    {taskList.map((task, index) => {
-                        if (task.state === TASK_STATUS.progress) {
-                            return (
-                                <Card
-                                    key={task.taskName}
-                                    taskName={task.taskName}
-                                    isDone={task.isDone}
-                                    index={index}
-                                    taskDescription={task.taskDescription}
-                                    state={task.state}>
-                                </Card>
-                                )
-                            }
-                        })
-                    }
-            </CardHolder>
-            <CardHolder
-                title={'Done'}
-                addTask={addTask}
-                taskStatus={TASK_STATUS.done}>
-                    {taskList.map((task, index) => {
-                        if (task.state === TASK_STATUS.done) {
-                            return (
-                                <Card
-                                    key={task.taskName}
-                                    taskName={task.taskName}
-                                    isDone={task.isDone}
-                                    index={index}
-                                    taskDescription={task.taskDescription}
-                                    state={task.state}>
-                                </Card>
-                                )
-                            }
-                        })
-                    }
-            </CardHolder>
-        </StyledMainScene>
-    )
-}
+  const taskDone = (index) => () => {
+    dispatch(doneCard(index));
+  };
+
+  return (
+    <StyledMainScene>
+      <button
+        type="button"
+        onClick={() => { dispatch({ type: CARD_LIST_ACTIONS.undo }); }}
+      >
+        UNDO
+      </button>
+      <button
+        type="button"
+        onClick={() => { dispatch({ type: CARD_LIST_ACTIONS.redo }); }}
+      >
+        REDO
+      </button>
+      <CardHolder
+        title="To Do"
+        addTask={addTask}
+        taskStatus={TASK_STATUS.toDo}
+      >
+        {taskList.map((task, index) => {
+          if (task.state === TASK_STATUS.toDo) {
+            return (
+              <Card
+                key={task.taskName}
+                taskName={task.taskName}
+                isDone={task.isDone}
+                index={index}
+                taskDescription={task.taskDescription}
+                state={task.state}
+              />
+            );
+          }
+          return false;
+        })}
+      </CardHolder>
+      <CardHolder
+        title="In Progress"
+        addTask={addTask}
+        taskStatus={TASK_STATUS.progress}
+      >
+        {taskList.map((task, index) => {
+          if (task.state === TASK_STATUS.progress) {
+            return (
+              <Card
+                key={task.taskName}
+                taskName={task.taskName}
+                isDone={task.isDone}
+                index={index}
+                taskDescription={task.taskDescription}
+                state={task.state}
+              />
+            );
+          }
+          return false;
+        })}
+      </CardHolder>
+      <CardHolder
+        title="Done"
+        addTask={addTask}
+        taskStatus={TASK_STATUS.done}
+      >
+        {taskList.map((task, index) => {
+          if (task.state === TASK_STATUS.done) {
+            return (
+              <Card
+                key={task.taskName}
+                taskName={task.taskName}
+                isDone={task.isDone}
+                index={index}
+                taskDescription={task.taskDescription}
+                state={task.state}
+              />
+            );
+          }
+          return false;
+        })}
+      </CardHolder>
+    </StyledMainScene>
+  );
+};
 
 export default MainScene;

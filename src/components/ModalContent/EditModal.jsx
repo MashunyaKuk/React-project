@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 import { ModalContext } from '../../HOC/GlobalModalProvider';
-import {useDispatch} from 'react-redux';
-import {changeCard} from '../../store/actions/cardsList';
+import { changeCard } from '../../store/actions/cardsList';
 
 const StyledEditModal = styled.div`
     .popup-title,
@@ -74,34 +74,36 @@ const StyledEditModal = styled.div`
           }
       }
     }
-`
+`;
 
 const EditModal = (props) => {
-    const setModalContent = useContext(ModalContext);
-    const [newTaskName, setNewTaskName] = useState('');
-    const [newTaskDescription, setNewTaskDescription] = useState('');
-    const dispatch = useDispatch();
+  const setModalContent = useContext(ModalContext);
+  const [newTaskName, setNewTaskName] = useState('');
+  const [newTaskDescription, setNewTaskDescription] = useState('');
+  const dispatch = useDispatch();
+  const { currentTaskName, currentTaskDescription, currentIndex } = props;
 
-    return (
-        <StyledEditModal>
-            <div className={"popup-title"}>
-                <p className={"popup-title_p"}>Task name</p>
-                <textarea
-                    id={"popup-title_in"}
-                    rows={"2"}
-                    defaultValue={props.currentTaskName}
-                    onChange={(event) =>
-                        {setNewTaskName(event.target.value)}}></textarea>
-            </div>
-            <div className={"popup-description"}>
-                <p className={"popup-description_p"}>Task Description</p>
-                <textarea
-                    id={"popup-description_in"}
-                    rows={"4"} defaultValue={props.currentTaskDescription}
-                    onChange={(event) =>
-                        {setNewTaskDescription(event.target.value)}}></textarea>
-            </div>
-            {/* <div className={"popup_user"}>
+  return (
+    <StyledEditModal>
+      <div className="popup-title">
+        <p className="popup-title_p">Task name</p>
+        <textarea
+          id="popup-title_in"
+          rows="2"
+          defaultValue={currentTaskName}
+          onChange={(event) => { setNewTaskName(event.target.value); }}
+        />
+      </div>
+      <div className="popup-description">
+        <p className="popup-description_p">Task Description</p>
+        <textarea
+          id="popup-description_in"
+          rows="4"
+          defaultValue={currentTaskDescription}
+          onChange={(event) => { setNewTaskDescription(event.target.value); }}
+        />
+      </div>
+      {/* <div className={"popup_user"}>
                 <div className={"popup_user-wrapper"}>
                     <select className={"popup_usernames"}>
                         <option value="1us" className="popup_username">User1</option>
@@ -109,35 +111,39 @@ const EditModal = (props) => {
                         <option value="3us" className="popup_username">User3</option>
                     </select>
                 </div>
-            </div> */}
-            <div className={"save-cancel-btn"}>
-                <button
-                    className={"popup-save"}
-                    id={"popup-save_data"}
-                    onClick={() => {
-                        /* if (newTaskName !== props.currentTaskName || newTaskDescription !== props.currentTaskDescription) { //баг - исправить!!!
-                            dispatch(changeCard(props.currentIndex, newTaskName, newTaskDescription));
-                        setModalContent(false);
-                        } */
-                        if (newTaskName === '' && newTaskDescription === '') {
-                            
-                        } else if (newTaskName !== '' && newTaskDescription !== '') {
-                                dispatch(changeCard(props.currentIndex, newTaskName, newTaskDescription));
-                            } else if (newTaskDescription === '') {
-                                dispatch(changeCard(props.currentIndex, newTaskName, props.currentTaskDescription));
-                            } else {
-                                dispatch(changeCard(props.currentIndex, props.currentTaskName, newTaskDescription));
-                            }
-                            setModalContent(false);
-                    }}>Save changes</button>
-                <button
-                    className={"popup-cancel"}
-                    id={"popup-cancel_data"}
-                    onClick={() => {
-                        setModalContent(false)}}>Cancel</button>
-            </div>
-        </StyledEditModal>
-    )
-}
+      </div> */}
+      <div className="save-cancel-btn">
+        <button
+          type="button"
+          className="popup-save"
+          id="popup-save_data"
+          onClick={() => {
+            if (newTaskName === '' && newTaskDescription === '') { //
+            } else if (newTaskName !== '' && newTaskDescription !== '') {
+              dispatch(changeCard(currentIndex, newTaskName, newTaskDescription));
+            } else if (newTaskDescription === '') {
+              dispatch(changeCard(currentIndex, newTaskName, currentTaskDescription));
+            } else {
+              dispatch(changeCard(currentIndex, currentTaskName, newTaskDescription));
+            }
+            setModalContent(false);
+          }}
+        >
+          Save changes
+        </button>
+        <button
+          type="button"
+          className="popup-cancel"
+          id="popup-cancel_data"
+          onClick={() => {
+            setModalContent(false);
+          }}
+        >
+          Cancel
+        </button>
+      </div>
+    </StyledEditModal>
+  );
+};
 
 export default EditModal;

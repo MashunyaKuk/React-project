@@ -1,28 +1,28 @@
-import { applyMiddleware, createStore } from "redux";
-import { TASK_STATUS } from "../constants/taskStatus";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import hardSet from "redux-persist/es/stateReconciler/hardSet";
-import rootReducer from "./reducers/rootReducer";
+import { applyMiddleware, createStore } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import hardSet from 'redux-persist/es/stateReconciler/hardSet';
+import TASK_STATUS from '../constants/taskStatus';
+import rootReducer from './reducers/rootReducer';
 
-let newTaskList = [
+const newTaskList = [
   {
-    taskName: "Task 1",
+    taskName: 'Task 1',
     isDone: false,
-    taskDescription: "Task 1 description",
+    taskDescription: 'Task 1 description',
     state: TASK_STATUS.toDo,
   },
   {
-    taskName: "Task 2",
+    taskName: 'Task 2',
     isDone: false,
-    taskDescription: "Task 1 description",
+    taskDescription: 'Task 1 description',
     state: TASK_STATUS.progress,
   },
   {
-    taskName: "Task 3",
+    taskName: 'Task 3',
     isDone: true,
-    taskDescription: "Task 3 description",
+    taskDescription: 'Task 3 description',
     state: TASK_STATUS.done,
   },
 ];
@@ -30,7 +30,7 @@ let newTaskList = [
 const initialState = { taskListReducer: { taskList: newTaskList } };
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage,
   stateReconciler: hardSet,
 };
@@ -46,7 +46,7 @@ const composedEnhancers = composeWithDevTools(...enhancers);
 export const store = createStore(
   persistedReducer,
   initialState,
-  composedEnhancers
+  composedEnhancers,
 );
 
 export const persistor = persistStore(store);

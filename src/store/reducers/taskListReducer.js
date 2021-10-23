@@ -1,10 +1,15 @@
-import { CARD_LIST_ACTIONS } from "../actionTypes";
-import { TASK_STATUS } from "../../constants/taskStatus";
+import CARD_LIST_ACTIONS from '../actionTypes';
+import TASK_STATUS from '../../constants/taskStatus';
 
 const taskListReducer = (state, action) => {
+  let newTaskList = [];
+  let newTask = {};
+  let resultTaskName = '';
+  let resultTaskDescription = '';
+
   switch (action.type) {
     case CARD_LIST_ACTIONS.add:
-      let newTaskList = [...state.taskList];
+      newTaskList = [...state.taskList];
       newTaskList.push({
         taskName: action.payload.name,
         isDone: false,
@@ -15,23 +20,29 @@ const taskListReducer = (state, action) => {
 
     case CARD_LIST_ACTIONS.toTop:
       newTaskList = [...state.taskList];
-      newTaskList.sort(function (x, y) {
-        return x == newTaskList[action.payload.index]
-          ? -1
+      /* newTaskList.sort((x, y) => (x == newTaskList[action.payload.index]
+        ? -1
           : y == newTaskList[action.payload.index]
           ? 1
-          : 0;
+          : 0)); */
+
+      newTaskList.sort((x, y) => {
+        if (x === newTaskList[action.payload.index]) {
+          return -1;
+        } if (y === newTaskList[action.payload.index]) {
+          return 1;
+        } return 0;
       });
       return { ...state, taskList: newTaskList };
 
     case CARD_LIST_ACTIONS.toBottom:
       newTaskList = [...state.taskList];
-      newTaskList.sort(function (x, y) {
-        return y == newTaskList[action.payload.index]
-          ? -1
-          : x == newTaskList[action.payload.index]
-          ? 1
-          : 0;
+      newTaskList.sort((x, y) => {
+        if (y === newTaskList[action.payload.index]) {
+          return -1;
+        } if (x === newTaskList[action.payload.index]) {
+          return 1;
+        } return 0;
       });
       return { ...state, taskList: newTaskList };
 
@@ -42,16 +53,20 @@ const taskListReducer = (state, action) => {
 
     case CARD_LIST_ACTIONS.done:
       newTaskList = [...state.taskList];
-      newTaskList[action.payload.index].isDone = true;
-      newTaskList[action.payload.index].state = TASK_STATUS.done;
+      newTask = { ...newTaskList[action.payload.index] };
+      newTask.isDone = true;
+      newTask.state = TASK_STATUS.done;
+      newTaskList.splice(action.payload.index, 1, newTask);
       return { ...state, taskList: newTaskList };
 
     case CARD_LIST_ACTIONS.change:
-      let resultTaskName = action.payload.name;
-      let resultTaskDescription = action.payload.description;
+      resultTaskName = action.payload.name;
+      resultTaskDescription = action.payload.description;
       newTaskList = [...state.taskList];
-      newTaskList[action.payload.index].taskName = resultTaskName;
-      newTaskList[action.payload.index].taskDescription = resultTaskDescription;
+      newTask = { ...newTaskList[action.payload.index] };
+      newTask.taskName = resultTaskName;
+      newTask.taskDescription = resultTaskDescription;
+      newTaskList.splice(action.payload.index, 1, newTask);
       return { ...state, taskList: newTaskList };
 
     default:

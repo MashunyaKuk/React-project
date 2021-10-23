@@ -1,4 +1,3 @@
-export const cardsListSelector = (store) => {
-  console.log("selector is", store.taskListReducer);
-  return store.taskListReducer.present.taskList;
-};
+const cardsListSelector = (store) => store.taskListReducer.present.taskList;
+
+export default cardsListSelector;

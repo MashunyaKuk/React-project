@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import styled from "styled-components";
-import { TASK_STATUS } from "../../constants/taskStatus";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import TASK_STATUS from '../../constants/taskStatus';
 
 const StyledCardHolder = styled.div`
     width: 250px;
@@ -64,43 +64,52 @@ const StyledCardHolder = styled.div`
         }
       }
 }
-`
+`;
 
 const CardHolder = (props) => {
-    const [newTaskName, setNewTaskName] = useState('');
-    const [newTaskDescription, setNewTaskDescription] = useState('');
+  const [newTaskName, setNewTaskName] = useState('');
+  const [newTaskDescription, setNewTaskDescription] = useState('');
+  const {
+    title, children, taskStatus, addTask,
+  } = props;
 
-    return (
-        <StyledCardHolder>
-            <div className={"board-card_title"}>
-                <h2>
-                    {props.title}
-                </h2>
-            </div>
-            {props.children}
-            {props.taskStatus !== TASK_STATUS.done &&
-            <div className="card">
-                <input
-                    onChange={(event) => {setNewTaskName(event.target.value)}}
-                    value={newTaskName}
-                    className={'usercard-title'}
-                    placeholder={'Your task name *'}/>
-                <input
-                onChange={(event) => {setNewTaskDescription(event.target.value)}}
-                value={newTaskDescription}
-                className={'usercard-description'}
-                placeholder={'Your task description'}/>
-                <button
-                className={"add-btn"}
-                onClick={() => {
-                    props.addTask(newTaskName, newTaskDescription, props.taskStatus);
-                    setNewTaskName('');
-                    setNewTaskDescription('');
-                }}>Add new Task</button>
-            </div>
-}
-        </StyledCardHolder>
-    )
-}
+  return (
+    <StyledCardHolder>
+      <div className="board-card_title">
+        <h2>
+          {title}
+        </h2>
+      </div>
+      {children}
+      {taskStatus !== TASK_STATUS.done && (
+        <div className="card">
+          <input
+            onChange={(event) => { setNewTaskName(event.target.value); }}
+            value={newTaskName}
+            className="usercard-title"
+            placeholder="Your task name *"
+          />
+          <input
+            onChange={(event) => { setNewTaskDescription(event.target.value); }}
+            value={newTaskDescription}
+            className="usercard-description"
+            placeholder="Your task description"
+          />
+          <button
+            type="button"
+            className="add-btn"
+            onClick={() => {
+              addTask(newTaskName, newTaskDescription, props.taskStatus);
+              setNewTaskName('');
+              setNewTaskDescription('');
+            }}
+          >
+            Add new Task
+          </button>
+        </div>
+      )}
+    </StyledCardHolder>
+  );
+};
 
 export default CardHolder;
